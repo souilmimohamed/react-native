@@ -4,8 +4,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const Authcontext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [loggedIn, SetLoggeIn] = useState(false);
+  const [loggedIn, SetLoggedIn] = useState(false);
   const [isLoading, setIsloading] = useState(false);
+  const [userInfo, setUserinfo] = useState({});
+  const [userProfile, setUserProfile] = useState({});
 
   const login = (username, password) => {
     setIsloading(true);
@@ -15,10 +17,11 @@ export const AuthProvider = ({ children }) => {
       (result) => {
         setIsloading(false);
         if (result.data.success === true) {
+          SetLoggedIn(true);
+          setUserinfo(result.data.body.userInfo);
+          setUserProfile(result.data.body.profile);
           AsyncStorage.setItem("token", result.data.body.token)
-            .then((res) => {
-              SetLoggeIn(true);
-            })
+            .then((res) => {})
             .catch((err) => {
               console.log(err);
             });
@@ -31,7 +34,9 @@ export const AuthProvider = ({ children }) => {
     );
   };
   return (
-    <Authcontext.Provider value={{ login, isLoading }}>
+    <Authcontext.Provider
+      value={{ login, isLoading, loggedIn, SetLoggedIn, userInfo, userProfile }}
+    >
       {children}
     </Authcontext.Provider>
   );

@@ -1,11 +1,9 @@
-import Login from "./screens/loginScreen";
-import { Authcontext, AuthProvider } from "./contexts/AuthContext";
-import { useContext } from "react";
+import { AuthProvider } from "./contexts/AuthContext";
+import Navigation from "./shared/navigation";
 export default function App() {
-  const { loggedIn } = useContext(Authcontext);
   return (
     <AuthProvider>
-      <Login />
+      <Navigation />
     </AuthProvider>
   );
 }
