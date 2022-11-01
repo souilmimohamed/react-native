@@ -1,11 +1,10 @@
 import { Text, View } from "react-native";
-
-const Home = () => {
+const Palette = () => {
   return (
     <View>
-      <Text>Home Screen</Text>
+      <Text>Palette Screen</Text>
     </View>
   );
 };
 
-export default Home;
+export default Palette;

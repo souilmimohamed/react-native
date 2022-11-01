@@ -9,11 +9,14 @@ import { useContext, useEffect, useState } from "react";
 import { Image, Text, View, SafeAreaView } from "react-native";
 import { Authcontext } from "../contexts/AuthContext";
 import Icon from "react-native-vector-icons/FontAwesome";
+import Icon2 from "react-native-vector-icons/FontAwesome5";
 import Home from "../screens/homeScreen";
 import Login from "../screens/loginScreen";
 import Scan from "../screens/scanScreen";
+import Palette from "../screens/palette";
 import { styles, navigationScreenOptions } from "../styles/navigationStyles";
 import { SetmenuObject } from "./menuItems";
+import Transfert from "../screens/transfertScreen";
 
 const Drawer = createDrawerNavigator();
 const Navigation = () => {
@@ -83,6 +86,38 @@ const Navigation = () => {
               drawerIcon: ({ focused, size }) => (
                 <Icon
                   name="qrcode"
+                  size={size}
+                  color={focused ? "#1e90ff" : "#ccc"}
+                />
+              ),
+            }}
+          />
+        )}
+        {userProfile.transfer && (
+          <Drawer.Screen
+            name="TRANSFER"
+            component={Transfert}
+            options={{
+              title: "TRANSFER",
+              drawerIcon: ({ focused, size }) => (
+                <Icon
+                  name="truck"
+                  size={size}
+                  color={focused ? "#1e90ff" : "#ccc"}
+                />
+              ),
+            }}
+          />
+        )}
+        {userProfile.palette && (
+          <Drawer.Screen
+            name="PALLET"
+            component={Palette}
+            options={{
+              title: "PALLET",
+              drawerIcon: ({ focused, size }) => (
+                <Icon2
+                  name="pallet"
                   size={size}
                   color={focused ? "#1e90ff" : "#ccc"}
                 />
