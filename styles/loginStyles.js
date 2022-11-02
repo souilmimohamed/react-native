@@ -2,11 +2,11 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.7,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F0F0F0",
+    backgroundColor: "#fff",
   },
   imageBox: {
     alignItems: "center",
@@ -44,6 +44,17 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 20,
+    fontWeight: "bold",
+  },
+  loginChoices: {
+    flex: 0.2,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    backgroundColor: "#fff",
+  },
+  loginChoicesText: {
+    color: "#fff",
     fontWeight: "bold",
   },
 });

@@ -1,69 +1,36 @@
-import { useState, useRef, useContext } from "react";
-import {
-  Image,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-  Keyboard,
-} from "react-native";
+import { useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import ManualLogin from "./manualLogin";
+import BadgeLogin from "./badgeLogin";
 import { styles } from "../styles/loginStyles";
-import Loader from "../shared/loader";
-import { Authcontext } from "../contexts/AuthContext";
 const Login = () => {
-  const { isLoading, login } = useContext(Authcontext);
-  const [username, SetUsername] = useState(null);
-  const [password, Setpassword] = useState(null);
+  const [isManual, setIsManual] = useState(false);
 
-  const ref_inputUsername = useRef();
-  const ref_inputPassword = useRef();
-
+  const getstyle = (val) => {
+    if (val) {
+      return { backgroundColor: "#000", padding: 15 };
+    } else {
+      return { backgroundColor: "#1e90ff", padding: 15, elevation: 10 };
+    }
+  };
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-      style={styles.container}
-    >
-      <View style={styles.container}>
-        {isLoading && <Loader />}
-        <View style={styles.imageBox}>
-          <Image source={require("../assets/logo.png")} />
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="login"
-          placeholderTextColor="#C0C0C0"
-          value={username}
-          onChangeText={(value) => {
-            SetUsername(value);
-          }}
-          ref={ref_inputUsername}
-          onSubmitEditing={() => ref_inputPassword.current.focus()}
-          blurOnSubmit={false}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="password"
-          secureTextEntry={true}
-          placeholderTextColor="#C0C0C0"
-          value={password}
-          onChangeText={(value) => {
-            Setpassword(value);
-          }}
-          ref={ref_inputPassword}
-        />
+    <>
+      <View style={styles.loginChoices}>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            login(username, password);
-          }}
+          style={getstyle(isManual)}
+          onPress={() => setIsManual(false)}
         >
-          <Text style={styles.buttonText}>LOGIN</Text>
+          <Text style={styles.loginChoicesText}>BADGE</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={getstyle(!isManual)}
+          onPress={() => setIsManual(true)}
+        >
+          <Text style={styles.loginChoicesText}>MANUAL</Text>
         </TouchableOpacity>
       </View>
-    </TouchableWithoutFeedback>
+      {isManual ? <ManualLogin /> : <BadgeLogin />}
+    </>
   );
 };
 export default Login;

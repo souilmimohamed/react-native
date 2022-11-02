@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import { AxiosPost } from "../shared/axiosService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { handleErrors } from "../shared/handleErrors";
 export const Authcontext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
       (result) => {
         setIsloading(false);
         if (result.data.success === true) {
+          setIsloading(false);
           SetLoggedIn(true);
           setUserinfo(result.data.body.userInfo);
           setUserProfile(result.data.body.profile);
@@ -25,6 +27,8 @@ export const AuthProvider = ({ children }) => {
             .catch((err) => {
               console.log(err);
             });
+        } else {
+          handleErrors(result.data.errors);
         }
       },
       (error) => {
