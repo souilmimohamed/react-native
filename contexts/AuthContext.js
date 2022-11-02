@@ -1,7 +1,8 @@
 import { createContext, useState } from "react";
-import { AxiosPost } from "../shared/axiosService";
+import { AxiosGet, AxiosPost } from "../shared/axiosService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { handleErrors } from "../shared/handleErrors";
+import axios from "axios";
 export const Authcontext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -18,7 +19,6 @@ export const AuthProvider = ({ children }) => {
       (result) => {
         setIsloading(false);
         if (result.data.success === true) {
-          setIsloading(false);
           SetLoggedIn(true);
           setUserinfo(result.data.body.userInfo);
           setUserProfile(result.data.body.profile);
@@ -37,9 +37,42 @@ export const AuthProvider = ({ children }) => {
       }
     );
   };
+
+  const logout = () => {
+    setIsloading(true);
+    AxiosGet(
+      "users/logout",
+      {},
+      (result) => {
+        setIsloading(false);
+        if (result.data.success === true) {
+          SetLoggedIn(false);
+          setUserinfo({});
+          setUserProfile({});
+          AsyncStorage.removeItem("token")
+            .then((res) => {})
+            .catch((err) => {
+              console.log(err);
+            });
+        } else handleErrors(result.data.errors);
+      },
+      (error) => {
+        console.log(error);
+        setIsloading(false);
+      }
+    );
+  };
   return (
     <Authcontext.Provider
-      value={{ login, isLoading, loggedIn, SetLoggedIn, userInfo, userProfile }}
+      value={{
+        login,
+        logout,
+        isLoading,
+        loggedIn,
+        SetLoggedIn,
+        userInfo,
+        userProfile,
+      }}
     >
       {children}
     </Authcontext.Provider>

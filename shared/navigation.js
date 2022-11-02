@@ -5,7 +5,7 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Image, Text, View, SafeAreaView } from "react-native";
 import { Authcontext } from "../contexts/AuthContext";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -15,14 +15,13 @@ import Login from "../screens/loginScreen";
 import Scan from "../screens/scanScreen";
 import Palette from "../screens/palette";
 import { styles, navigationScreenOptions } from "../styles/navigationStyles";
-import { SetmenuObject } from "./menuItems";
 import Transfert from "../screens/transfertScreen";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const Drawer = createDrawerNavigator();
 const Navigation = () => {
-  const { loggedIn, SetLoggedIn, userInfo, userProfile } =
-    useContext(Authcontext);
-  const menuObject = SetmenuObject(userProfile);
+  const { logout, loggedIn, userInfo, userProfile } = useContext(Authcontext);
+  const { isLoading } = useContext(Authcontext);
   const CustomDrawer = (props) => {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -44,7 +43,7 @@ const Navigation = () => {
             style={{ backgroundColor: "#ddf1fe" }}
             labelStyle={{ fontWeight: "bold", fontSize: 15 }}
             label={"Logout"}
-            onPress={() => SetLoggedIn(false)}
+            onPress={() => logout()}
             icon={({ focused, size }) => (
               <Icon
                 name="sign-out"
@@ -130,9 +129,12 @@ const Navigation = () => {
   };
   if (loggedIn) {
     return (
-      <NavigationContainer>
-        <DrawerNavigator />
-      </NavigationContainer>
+      <>
+        <Spinner visible={isLoading} color="#000" size={50} />
+        <NavigationContainer>
+          <DrawerNavigator />
+        </NavigationContainer>
+      </>
     );
   }
   return <Login />;

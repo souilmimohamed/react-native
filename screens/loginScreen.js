@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import ManualLogin from "./manualLogin";
 import BadgeLogin from "./badgeLogin";
 import { styles } from "../styles/loginStyles";
+import Spinner from "react-native-loading-spinner-overlay";
+import { Authcontext } from "../contexts/AuthContext";
 const Login = () => {
   const [isManual, setIsManual] = useState(false);
-
+  const { isLoading } = useContext(Authcontext);
   const getstyle = (val) => {
     if (val) {
       return { backgroundColor: "#000", padding: 15 };
@@ -15,6 +17,7 @@ const Login = () => {
   };
   return (
     <>
+      <Spinner visible={isLoading} color="#000" size={50} />
       <View style={styles.loginChoices}>
         <TouchableOpacity
           style={getstyle(isManual)}

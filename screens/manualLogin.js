@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import { styles } from "../styles/loginStyles";
 import { Authcontext } from "../contexts/AuthContext";
-import Spinner from "react-native-loading-spinner-overlay";
+
 const ManualLogin = () => {
-  const { isLoading, login } = useContext(Authcontext);
+  const { login } = useContext(Authcontext);
   const [username, SetUsername] = useState(null);
   const [password, Setpassword] = useState(null);
 
@@ -28,7 +28,6 @@ const ManualLogin = () => {
       style={styles.container}
     >
       <View style={styles.container}>
-        <Spinner visible={isLoading} color="#000" size={50} />
         <View style={styles.imageBox}>
           <Image source={require("../assets/logo.png")} />
         </View>
@@ -54,6 +53,7 @@ const ManualLogin = () => {
             Setpassword(value);
           }}
           ref={ref_inputPassword}
+          onSubmitEditing={() => login(username, password)}
         />
         <TouchableOpacity
           style={validate ? styles.button : { ...styles.button, opacity: 0.5 }}
